@@ -1,0 +1,75 @@
+
+
+class Kendaraan:
+    def __init__(self, merek, model):
+        self.merek = merek
+        self.model = model
+
+    def berkendara(self):
+        print(f"{self.merek} {self.model} sedang berjalan di jalan raya.")
+
+
+class Mobil(Kendaraan):
+    def __init__(self, merek, model, jumlah_pintu):
+        super().__init__(merek, model)  #gunanya super() itu untuk menyebutkan __init__pada( clas kendaraan)
+        self.jumlah_pintu = jumlah_pintu
+
+    def klakson(self):
+        print("Mobil bunyi: Tin! Tin!")
+
+
+class Truk(Kendaraan):
+    def __init__(self, merek, model, kapasitas_muatan):
+        super().__init__(merek, model)
+        self.kapasitas_muatan = kapasitas_muatan
+
+    def muat_barang(self, berat):
+        #  pakai try-except untuk mengimput muatan truk
+        try:
+            print(f"Mencoba memuat barang sebesar {berat} kg...")
+            
+            if berat < 0:
+                # Kalau inputnya negatif, kita lempar ValueError
+                raise ValueError("Berat muatan tidak boleh angka negatif!")
+            
+            if berat > self.kapasitas_muatan:
+                # Kalau keberatan, lempar Exception umum
+                raise Exception(f"Kelebihan Beban! Maksimal cuma {self.kapasitas_muatan} kg.")
+            
+            print(f"Berhasil! {berat} kg sudah masuk ke dalam truk.")
+            
+        except ValueError as e_input:
+            print(f"[ERROR INPUT]: {e_input}")
+        except Exception as e_beban:
+            print(f"[PERINGATAN]: {e_beban}")
+
+
+def main():
+    try:
+        print("--- Program Simulasi Kendaraan ---")
+        
+        # ini kita buat objek mobilnya
+        mobil_saya = Mobil("Toyota", "Avanza", 4)
+        print(f"Mobil saya adalah {mobil_saya.merek} dengan {mobil_saya.jumlah_pintu} pintu.")
+        mobil_saya.berkendara()
+        mobil_saya.klakson()
+        
+        print("-" * 30)
+
+        # dan ini objek untuk truk
+        truk_saya = Truk("Mitsubishi", "Fuso", 5000)
+        truk_saya.berkendara()
+        
+        # Simulasi error: muat barang melebihi kapasitas (6000 kg)
+        truk_saya.muat_barang(6000)
+        
+        # Simulasi error: input negatif
+        truk_saya.muat_barang(7000)
+
+    # ini tu ibaratnya satpam sama seperti main()
+    except Exception as e_sistem:
+        print(f"Ada kesalahan pada sistem: {e_sistem}")
+
+
+if __name__ == "__main__":
+    main()
